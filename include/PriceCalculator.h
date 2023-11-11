@@ -12,8 +12,6 @@ namespace PriceCal
             CASH_TAKEOFF,
             CASH_DISCOUNT
         };
-        PriceCalculator();
-        ~PriceCalculator();
         double calculatePrice(const DiscountType type, const double price) const noexcept;
     };
 }
