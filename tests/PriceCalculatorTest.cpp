@@ -9,7 +9,7 @@ using namespace PriceCal;
 TEST(PriceCalculator, should_return_100_when_given_cash_normal_and_price_100)
 {
     // given
-    PriceCalculator *noneDiscountCalculator = new NoneDiscountCalculator();
+    PriceCalculator *noneDiscountCalculator = new NoneDiscountCalculator(); // 原价卖出
 
     // when
     double cash = noneDiscountCalculator->calculatePrice(100);
@@ -66,4 +66,17 @@ TEST(PriceCalculator, should_return_160_when_given_cash_discount_and_price_200)
 
     // then
     EXPECT_DOUBLE_EQ(160, cash);
+}
+
+
+TEST(PriceCalculator, should_return_80_when_given_cash_takeoff_and_price_100)
+{
+    // given
+    PriceCalculator *percentDiscountCalculator = new PercentDiscountCalculator(0.8);  // 打八折
+
+    // when
+    double cash = percentDiscountCalculator->calculatePrice(100);
+
+    // then
+    EXPECT_DOUBLE_EQ(80, cash);
 }
