@@ -80,3 +80,15 @@ TEST(PriceCalculator, should_return_80_when_given_cash_takeoff_and_price_100)
     // then
     EXPECT_DOUBLE_EQ(80, cash);
 }
+
+TEST(PriceCalculator, should_return_70_when_given_cash_takeoff_and_price_100)
+{
+    // given
+    PriceCalculator *percentDiscountCalculator = new PercentDiscountCalculator(0.7);  // 打七折
+
+    // when
+    double cash = percentDiscountCalculator->calculatePrice(100);
+
+    // then
+    EXPECT_DOUBLE_EQ(70, cash);
+}
