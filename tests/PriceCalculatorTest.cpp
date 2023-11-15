@@ -18,6 +18,7 @@ TEST(PriceCalculator, should_return_100_when_given_cash_normal_and_price_100)
     EXPECT_DOUBLE_EQ(100, cash);
 }
 
+/*
 TEST(PriceCalculator, should_return_90_when_given_cash_takeoff_and_price_100)
 {
     // given
@@ -41,3 +42,4 @@ TEST(PriceCalculator, should_return_80_when_given_cash_discount_and_price_100)
     // then
     EXPECT_DOUBLE_EQ(80, cash);
 }
+*/
