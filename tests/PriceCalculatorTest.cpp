@@ -40,3 +40,14 @@ TEST(PriceCalculator, should_return_80_when_given_cash_discount_and_price_100)
     EXPECT_DOUBLE_EQ(80, cash);
 }
 
+TEST(PriceCalculator, should_return_90_when_given_cash_discount_and_price_90)
+{
+    // given
+    PriceCalculator priceCalculator;
+
+    // when
+    double cash = priceCalculator.calculatePrice(PriceCalculator::DiscountType::CASH_DISCOUNT, 90);
+
+    // then
+    EXPECT_DOUBLE_EQ(90, cash);
+}
