@@ -43,3 +43,15 @@ TEST(PriceCalculator, should_return_80_when_given_cash_discount_and_price_100)
     // then
     EXPECT_DOUBLE_EQ(80, cash);
 }
+
+TEST(PriceCalculator, should_return_80_when_given_cash_discount_and_price_80)
+{
+    // given
+    PriceCalculator *amountDiscountCalculator = new AmountDiscountCalculator(100, 20); // 满减，满100减20
+
+    // when
+    double cash = amountDiscountCalculator->calculatePrice(80);
+
+    // then
+    EXPECT_DOUBLE_EQ(80, cash);
+}
