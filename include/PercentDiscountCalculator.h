@@ -8,6 +8,7 @@ namespace PriceCal {
         const double percentTakeOff; //打几折，取值为 0 ~ 1
     public:
         PercentDiscountCalculator(const double percentTakeOff);
+        virtual ~PercentDiscountCalculator() = default;
         double calculatePrice(const double price) const noexcept override;
     };
 

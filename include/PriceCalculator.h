@@ -13,6 +13,7 @@ namespace PriceCal
             CASH_TAKEOFF,
             CASH_DISCOUNT
         };*/
-        virtual double calculatePrice(const t double price) const noexcept = 0;
+        virtual double calculatePrice(const double price) const noexcept = 0;
+        virtual ~PriceCalculator() = default;
     };
 }

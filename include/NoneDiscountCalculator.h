@@ -6,6 +6,7 @@ namespace PriceCal {
     class NoneDiscountCalculator : public PriceCalculator {
     public:
         double calculatePrice(const double price) const noexcept override;
+        virtual ~NoneDiscountCalculator() = default;
     };
 
 }
