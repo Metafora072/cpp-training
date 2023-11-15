@@ -2,16 +2,17 @@
 
 namespace PriceCal
 {
+    // 价格计算的接口，里面包含折扣类型以及价格计算的纯虚函数
     class PriceCalculator
     {
 
     public:
-        enum class DiscountType
+        /*enum class DiscountType
         {
             CASH_NORMAL,
             CASH_TAKEOFF,
             CASH_DISCOUNT
-        };
-        double calculatePrice(const DiscountType type, const double price) const noexcept;
+        };*/
+        virtual double calculatePrice(const t double price) const noexcept = 0;
     };
 }
