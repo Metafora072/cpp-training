@@ -7,7 +7,7 @@ namespace PriceCalc
 {
 
     // Discount接口成员函数实现
-    PriceCalculator::Discount::~Discount() {}
+    // PriceCalculator::Discount::~Discount() {}
 
     // 静态成员初始化
     PriceCalculator::DiscountMapSingleton *PriceCalculator::DiscountMapSingleton::discountMapSingleton = NULL;
@@ -15,17 +15,22 @@ namespace PriceCalc
     // 构造函数
     PriceCalculator::DiscountMapSingleton::DiscountMapSingleton() {}
 
-    std::unordered_map<DiscountType, std::unique_ptr<PriceCalculator::Discount>> &PriceCalculator::DiscountMapSingleton::getDiscountMap()
+    std::unordered_map<DiscountType, std::function<double(double)>> &PriceCalculator::DiscountMapSingleton::getDiscountMap()
     {
         if (discountMapSingleton == NULL)
         {
             discountMapSingleton = new DiscountMapSingleton;
             //printf("update discountMap!");
-            discountMapSingleton->discountMap.emplace(DiscountType::CASH_NORMAL, std::make_unique<Normal>());
-            discountMapSingleton->discountMap.emplace(DiscountType::CASH_PERCENTOFF_10, std::make_unique<PercentOff>(0.9));
-            discountMapSingleton->discountMap.emplace(DiscountType::CASH_PERCENTOFF_20, std::make_unique<PercentOff>(0.8));
-            discountMapSingleton->discountMap.emplace(DiscountType::CASH_PERCENTOFF_30, std::make_unique<PercentOff>(0.7));
-            discountMapSingleton->discountMap.emplace(DiscountType::CASH_BACK, std::make_unique<CashBack>(100.0, 20.0));
+            // discountMapSingleton->discountMap.emplace(DiscountType::CASH_NORMAL, std::make_unique<Normal>());
+            // discountMapSingleton->discountMap.emplace(DiscountType::CASH_PERCENTOFF_10, std::make_unique<PercentOff>(0.9));
+            // discountMapSingleton->discountMap.emplace(DiscountType::CASH_PERCENTOFF_20, std::make_unique<PercentOff>(0.8));
+            // discountMapSingleton->discountMap.emplace(DiscountType::CASH_PERCENTOFF_30, std::make_unique<PercentOff>(0.7));
+            // discountMapSingleton->discountMap.emplace(DiscountType::CASH_BACK, std::make_unique<CashBack>(100.0, 20.0));
+            discountMapSingleton->discountMap.emplace(DiscountType::CASH_NORMAL, [](double money) { return Normal().AcceptCash(money); });
+            discountMapSingleton->discountMap.emplace(DiscountType::CASH_PERCENTOFF_10, [](double money) { return PercentOff(0.9).AcceptCash(money); });
+            discountMapSingleton->discountMap.emplace(DiscountType::CASH_PERCENTOFF_20, [](double money) { return PercentOff(0.8).AcceptCash(money); });
+            discountMapSingleton->discountMap.emplace(DiscountType::CASH_PERCENTOFF_30, [](double money) { return PercentOff(0.7).AcceptCash(money); });
+            discountMapSingleton->discountMap.emplace(DiscountType::CASH_BACK, [](double money) { return CashBack(100.0, 20.0).AcceptCash(money); });
         }
         return discountMapSingleton->discountMap;
     }
@@ -58,6 +63,6 @@ namespace PriceCalc
 
     double PriceCalculator::AcceptCash(const DiscountType discountType, const double money) const noexcept
     {
-        return PriceCalculator::DiscountMapSingleton::getDiscountMap().find(discountType)->second->AcceptCash(money);
+        return PriceCalculator::DiscountMapSingleton::getDiscountMap()[discountType](money);
     }
 } // namespace PriceCalc
