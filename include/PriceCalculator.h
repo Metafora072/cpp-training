@@ -31,7 +31,7 @@ namespace PriceCalc
         class DiscountMapSingleton
         {
         public:
-            static std::unordered_map<DiscountType,std::unique_ptr<Discount>>& getInstance();
+            static std::unordered_map<DiscountType,std::unique_ptr<Discount>>& getDiscountMap();
         private:
             DiscountMapSingleton();
             std::unordered_map<DiscountType, std::unique_ptr<Discount>> discountMap;

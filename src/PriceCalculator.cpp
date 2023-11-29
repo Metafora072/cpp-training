@@ -15,12 +15,12 @@ namespace PriceCalc
     // 构造函数
     PriceCalculator::DiscountMapSingleton::DiscountMapSingleton() {}
 
-    std::unordered_map<DiscountType, std::unique_ptr<PriceCalculator::Discount>> &PriceCalculator::DiscountMapSingleton::getInstance()
+    std::unordered_map<DiscountType, std::unique_ptr<PriceCalculator::Discount>> &PriceCalculator::DiscountMapSingleton::getDiscountMap()
     {
         if (discountMapSingleton == NULL)
         {
             discountMapSingleton = new DiscountMapSingleton;
-            printf("update discountMap!");
+            //printf("update discountMap!");
             discountMapSingleton->discountMap.emplace(DiscountType::CASH_NORMAL, std::make_unique<Normal>());
             discountMapSingleton->discountMap.emplace(DiscountType::CASH_PERCENTOFF_10, std::make_unique<PercentOff>(0.9));
             discountMapSingleton->discountMap.emplace(DiscountType::CASH_PERCENTOFF_20, std::make_unique<PercentOff>(0.8));
@@ -58,6 +58,6 @@ namespace PriceCalc
 
     double PriceCalculator::AcceptCash(const DiscountType discountType, const double money) const noexcept
     {
-        return PriceCalculator::DiscountMapSingleton::getInstance().find(discountType)->second->AcceptCash(money);
+        return PriceCalculator::DiscountMapSingleton::getDiscountMap().find(discountType)->second->AcceptCash(money);
     }
 } // namespace PriceCalc
