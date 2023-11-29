@@ -1,5 +1,6 @@
 #pragma once
-
+#include <unordered_map>
+#include <memory>
 #include <cmath>
 enum class DiscountType
 {
@@ -23,8 +24,19 @@ namespace PriceCalc
         public:
             virtual double AcceptCash(const double money) const noexcept = 0;
             virtual ~Discount();
+
+        private:
         };
 
+        class DiscountMapSingleton
+        {
+        public:
+            static std::unordered_map<DiscountType,std::unique_ptr<Discount>>& getInstance();
+        private:
+            DiscountMapSingleton();
+            std::unordered_map<DiscountType, std::unique_ptr<Discount>> discountMap;
+            static DiscountMapSingleton *discountMapSingleton;
+        };
         class Normal final : public Discount
         {
         public:
