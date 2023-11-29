@@ -1,19 +1,65 @@
 #pragma once
 
-namespace PriceCal
+#include <cmath>
+enum class DiscountType
 {
-    // 价格计算的接口，里面包含折扣类型以及价格计算的纯虚函数
-    class PriceCalculator
+    CASH_NORMAL,
+    CASH_PERCENTOFF_10,
+    CASH_PERCENTOFF_20,
+    CASH_PERCENTOFF_30,
+    CASH_BACK,
+};
+
+namespace PriceCalc
+{
+    class PriceCalculator final
     {
+    public:
+        double AcceptCash(const DiscountType discountType, const double money) const noexcept;
+    };
+
+    class Normal final
+    {
+    public:
+        double AcceptCash(const double money) const noexcept
+        {
+            return money;
+        }
+        virtual ~Normal();
+    };
+    class PercentOff final
+    {
+    private:
+        double discountRate = 1;
 
     public:
-        /*enum class DiscountType
+        explicit PercentOff(double discountRate)
         {
-            CASH_NORMAL,
-            CASH_TAKEOFF,
-            CASH_DISCOUNT
-        };*/
-        virtual double calculatePrice(const double price) const noexcept = 0;
-        virtual ~PriceCalculator() = default;
+            this->discountRate = discountRate;
+        }
+        virtual ~PercentOff();
+
+        double AcceptCash(const double money) const noexcept
+        {
+            return money * discountRate;
+        }
+    };
+    class CashBack final
+    {
+    private:
+        double threshold = 100.0;
+        double cashback = 20.0;
+
+    public:
+        explicit CashBack(double threshold, double cashback)
+        {
+            this->threshold = threshold;
+            this->cashback = cashback;
+        }
+        virtual ~CashBack();
+        double AcceptCash(const double money) const noexcept
+        {
+            return money - floor(money / threshold) * cashback;
+        }
     };
 }

@@ -1,94 +1,89 @@
 #include <gtest/gtest.h>
-#include "PriceCalculator.h"
-#include "NoneDiscountCalculator.h"
-#include "PercentDiscountCalculator.h"
-#include "AmountDiscountCalculator.h"
 
-using namespace PriceCal;
+#include "PriceCalculator.h"
+
+using namespace PriceCalc;
 
 TEST(PriceCalculator, should_return_100_when_given_cash_normal_and_price_100)
 {
     // given
-    PriceCalculator *noneDiscountCalculator = new NoneDiscountCalculator(); // 原价卖出
+    PriceCalculator priceCalculator;
+    DiscountType discountType = DiscountType::CASH_NORMAL;
+    double money = 100.0;
 
     // when
-    double cash = noneDiscountCalculator->calculatePrice(100);
+    double cash = priceCalculator.AcceptCash(discountType, money);
 
     // then
-    EXPECT_DOUBLE_EQ(100, cash);
+    EXPECT_DOUBLE_EQ(100.0, cash);
 }
 
-
-TEST(PriceCalculator, should_return_90_when_given_cash_takeoff_and_price_100)
+TEST(PriceCalculator, should_return_90_when_cash_percent_off_10_and_price_100)
 {
     // given
-    PriceCalculator *percentDiscountCalculator = new PercentDiscountCalculator(0.9); // 打九折
+    PriceCalculator priceCalculator;
+    DiscountType discountType = DiscountType::CASH_PERCENTOFF_10;
+    double money = 100.0;
 
     // when
-    double cash = percentDiscountCalculator->calculatePrice(100);
+    double cash = priceCalculator.AcceptCash(discountType, money);
 
     // then
-    EXPECT_DOUBLE_EQ(90, cash);
+    EXPECT_DOUBLE_EQ(90.0, cash);
 }
 
-
-TEST(PriceCalculator, should_return_80_when_given_cash_discount_and_price_100)
+TEST(PriceCalculator, should_return_80_when_cash_percent_off_20_and_price_100)
 {
     // given
-    PriceCalculator *amountDiscountCalculator = new AmountDiscountCalculator(100, 20); // 满减，满100减20
+    PriceCalculator priceCalculator;
+    DiscountType discountType = DiscountType::CASH_PERCENTOFF_20;
+    double money = 100.0;
 
     // when
-    double cash = amountDiscountCalculator->calculatePrice(100);
+    double cash = priceCalculator.AcceptCash(discountType, money);
 
     // then
-    EXPECT_DOUBLE_EQ(80, cash);
+    EXPECT_DOUBLE_EQ(80.0, cash);
 }
 
-TEST(PriceCalculator, should_return_80_when_given_cash_discount_and_price_80)
+TEST(PriceCalculator, should_return_70_when_cash_percent_off_30_and_price_100)
 {
     // given
-    PriceCalculator *amountDiscountCalculator = new AmountDiscountCalculator(100, 20); // 满减，满100减20
+    PriceCalculator priceCalculator;
+    DiscountType discountType = DiscountType::CASH_PERCENTOFF_30;
+    double money = 100.0;
 
     // when
-    double cash = amountDiscountCalculator->calculatePrice(80);
+    double cash = priceCalculator.AcceptCash(discountType, money);
 
     // then
-    EXPECT_DOUBLE_EQ(80, cash);
+    EXPECT_DOUBLE_EQ(70.0, cash);
 }
 
-TEST(PriceCalculator, should_return_160_when_given_cash_discount_and_price_200)
+TEST(PriceCalculator, should_return_90_when_given_cash_back_and_price_90)
 {
     // given
-    PriceCalculator *amountDiscountCalculator = new AmountDiscountCalculator(100, 20); // 满减，满100减20
+    PriceCalculator priceCalculator;
+    DiscountType discountType = DiscountType::CASH_BACK;
+    double money = 90.0;
 
     // when
-    double cash = amountDiscountCalculator->calculatePrice(200);
+    double cash = priceCalculator.AcceptCash(discountType, money);
 
     // then
-    EXPECT_DOUBLE_EQ(160, cash);
+    EXPECT_DOUBLE_EQ(90.0, cash);
 }
 
-
-TEST(PriceCalculator, should_return_80_when_given_cash_takeoff_and_price_100)
+TEST(PriceCalculator, should_return_80_when_given_cash_back_and_price_100)
 {
     // given
-    PriceCalculator *percentDiscountCalculator = new PercentDiscountCalculator(0.8);  // 打八折
+    PriceCalculator priceCalculator;
+    DiscountType discountType = DiscountType::CASH_BACK;
+    double money = 100.0;
 
     // when
-    double cash = percentDiscountCalculator->calculatePrice(100);
+    double cash = priceCalculator.AcceptCash(discountType, money);
 
     // then
-    EXPECT_DOUBLE_EQ(80, cash);
-}
-
-TEST(PriceCalculator, should_return_70_when_given_cash_takeoff_and_price_100)
-{
-    // given
-    PriceCalculator *percentDiscountCalculator = new PercentDiscountCalculator(0.7);  // 打七折
-
-    // when
-    double cash = percentDiscountCalculator->calculatePrice(100);
-
-    // then
-    EXPECT_DOUBLE_EQ(70, cash);
+    EXPECT_DOUBLE_EQ(80.0, cash);
 }
