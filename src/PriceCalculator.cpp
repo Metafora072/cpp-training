@@ -5,6 +5,33 @@
 #include <unordered_map>
 namespace PriceCalc
 {
+    //Discount接口成员函数实现
+    PriceCalculator::Discount::~Discount(){}
+
+    //Normal接口成员函数实现
+    double PriceCalculator::Normal::AcceptCash(const double money) const noexcept {
+        return money;
+    }
+    PriceCalculator::Normal::~Normal(){}
+
+    //PercentOff接口成员函数实现
+    PriceCalculator::PercentOff::PercentOff(double rate) : discountRate(rate){};
+
+    double PriceCalculator::PercentOff::AcceptCash(const double money) const noexcept{
+        return money * discountRate;
+    }
+    PriceCalculator::PercentOff::~PercentOff(){};
+
+    //CashBack接口成员函数实现
+    PriceCalculator::CashBack::CashBack(double threshold, double cashback) : threshold(threshold), cashback(cashback) {}
+
+    double PriceCalculator::CashBack::AcceptCash(const double money) const noexcept{
+        return money - floor(money / threshold) * cashback;
+    }
+
+    PriceCalculator::CashBack::~CashBack(){};
+
+
     double PriceCalculator::AcceptCash(const DiscountType discountType, const double money) const noexcept
     {
         //double cash = 0.0;

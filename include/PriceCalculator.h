@@ -22,17 +22,14 @@ namespace PriceCalc
         {
         public:
             virtual double AcceptCash(const double money) const noexcept = 0;
-            virtual ~Discount(){};
+            virtual ~Discount();
         };
 
         class Normal final : public Discount
         {
         public:
-            double AcceptCash(const double money) const noexcept override
-            {
-                return money;
-            }
-            virtual ~Normal(){};
+            double AcceptCash(const double money) const noexcept override;
+            virtual ~Normal();
         };
 
         class PercentOff final : public Discount
@@ -41,12 +38,9 @@ namespace PriceCalc
             double discountRate = 1;
 
         public:
-            explicit PercentOff(double rate) : discountRate(rate){};
-            virtual ~PercentOff(){};
-            double AcceptCash(const double money) const noexcept override
-            {
-                return money * discountRate;
-            }
+            explicit PercentOff(double rate);
+            virtual ~PercentOff();
+            double AcceptCash(const double money) const noexcept override;
         };
         class CashBack final : public Discount
         {
@@ -54,12 +48,9 @@ namespace PriceCalc
             double cashback = 20.0;
 
         public:
-            explicit CashBack(double threshold, double cashback) : threshold(threshold), cashback(cashback){};
-            virtual ~CashBack(){};
-            double AcceptCash(const double money) const noexcept override
-            {
-                return money - floor(money / threshold) * cashback;
-            }
+            explicit CashBack(double threshold, double cashback);
+            virtual ~CashBack();
+            double AcceptCash(const double money) const noexcept override;
         };
     };
 } // namespace PriceCalc
